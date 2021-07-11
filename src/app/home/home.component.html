@@ -1,0 +1,24 @@
+<div style="text-align:center">
+  <h1 class="title1">
+    {{ title }}
+  </h1>
+  <h4 class="title4">CALIFORNIA</h4>
+  <hr>
+  <div class="container">
+    <div id="overlay">
+      <button (click)="closeDetails()" >X</button>
+      <ngb-carousel>
+        <ng-template ngbSlide *ngFor="let image of images">
+          <img src="{{image.href}}" (click)="getDetails()" alt="carousel">
+        </ng-template>
+      </ngb-carousel>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-4 ProductCard-container" *ngFor="let product of products">        
+        <img [src]="product.hero.href" alt="hero" class="img-responsive" (click)="viewDetails(product)" >
+        <p class="title">{{ product.name }}</p>
+        <span class="price">{{ product.price | currency }}</span>
+      </div>
+    </div>
+  </div>
+</div>
