@@ -7,7 +7,7 @@
   <div class="container">
     <div id="overlay">
       <button (click)="closeDetails()" >X</button>
-      <ngb-carousel>
+      <ngb-carousel style="width: 367px; left:15%">
         <ng-template ngbSlide *ngFor="let image of images">
           <img src="{{image.href}}" (click)="getDetails()" alt="carousel">
         </ng-template>
