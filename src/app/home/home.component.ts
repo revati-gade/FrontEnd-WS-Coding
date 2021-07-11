@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductService} from '../services/product.service';
-import {APIResponse, Product,DisplayProduct,Image} from '../models/dtos';
-import {Router} from '@angular/router';
+import { ProductService } from '../services/product.service';
+import { APIResponse, Product, DisplayProduct, Image } from '../models/dtos';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -18,13 +18,14 @@ export class HomeComponent implements OnInit {
   errorMessage: string;
 
   constructor(private router: Router,
-              private productService: ProductService) {}
+    private productService: ProductService) { }
 
   ngOnInit() {
     this.productService.getProducts()
       .subscribe(data => {
         this.apiResponse = data;
-        this.products = this.apiResponse.groups.map(p=>this.productService.validateProduct(p));
+        this.products = this.apiResponse.groups.map(p => this.productService.validateProduct(p));
+        this.images = this.products[0].images;
       }, error => {
         this.errorMessage = error;
       });
@@ -33,10 +34,9 @@ export class HomeComponent implements OnInit {
   viewDetails(product: Product): void {
     // set it to service
     this.productService.setCurrentProduct(product);
-    this.images= product.images;
-    this.isOpen=!this.isOpen;
+    this.images = product.images.length != 0 ? product.images : [product.hero];
+    this.isOpen = !this.isOpen;
     document.getElementById("overlay").style.display = "block";
-    // this.router.navigate(['/details']);
   }
 
   getDetails(): void {
