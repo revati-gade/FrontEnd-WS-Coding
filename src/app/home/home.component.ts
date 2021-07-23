@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { APIResponse, Product, DisplayProduct, Image } from '../models/dtos';
-import { Router } from '@angular/router';
+// import { Router } from '@angular/router';
+import {
+  NgbModal
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   title = 'WILLIAMS SONOMA';
@@ -15,9 +18,11 @@ export class HomeComponent implements OnInit {
   products: DisplayProduct[] = [];
   images: Image[] = [];
   apiResponse: APIResponse;
-  errorMessage: string;
+  errorMessage: string;  
+  name: string;
+  imagesUrl: any;
 
-  constructor(private router: Router,
+  constructor(private modalService: NgbModal,
     private productService: ProductService) { }
 
   ngOnInit() {
@@ -31,20 +36,12 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  viewDetails(product: Product): void {
-    // set it to service
-    this.productService.setCurrentProduct(product);
-    this.images = product.images.length != 0 ? product.images : [product.hero];
-    this.isOpen = !this.isOpen;
-    document.getElementById("overlay").style.display = "block";
-  }
-
-  getDetails(): void {
-    this.router.navigate(['/details']);
-  }
-
-  closeDetails(): void {
-    document.getElementById("overlay").style.display = "none";
+  openModal(insideContent: string, group: DisplayProduct) {
+    this.modalService.open(insideContent, {
+      size: 'sm'
+    });
+    this.name = group.name;
+    this.imagesUrl =  group.images.length != 0 ?group.images.map((image) => image.href):[group.hero.href];
   }
 
 }

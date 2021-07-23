@@ -5,18 +5,30 @@
   <h4 class="title4">CALIFORNIA</h4>
   <hr>
   <div class="container">
-    <div id="overlay">
-      <button (click)="closeDetails()">X</button>
-      <ngb-carousel>
-        <ng-template ngbSlide *ngFor="let image of images">
-          <img src="{{image.href}}" (click)="getDetails()" alt="carousel">
-        </ng-template>
-      </ngb-carousel>
-    </div>
+    <ng-template #insideContent let-modal let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">{{name}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ngb-carousel *ngIf="imagesUrl">
+          <ng-template ngbSlide *ngFor="let image of imagesUrl">
+            <div class="picsum-img-wrapper">
+              <img [src]="image" class="img-sm" alt="">
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="d('Close click')">Close</button>
+      </div>
+    </ng-template>
     <div class="row">
       <div class="col-xs-12 col-md-4 ProductCard-container" *ngFor="let product of products">
         <div class="overlayTitle">{{ product.name | uppercase }}</div>
-        <img [src]="product.hero.href" alt="hero" class="img-responsive" (click)="viewDetails(product)">
+        <img [src]="product.hero.href" alt="hero" class="img-responsive" (click)="openModal(insideContent, product)">
         <span class="price"> ${{product.price}}</span>
       </div>
     </div>
